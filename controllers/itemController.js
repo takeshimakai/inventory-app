@@ -43,12 +43,12 @@ exports.itemDeletePost = (req, res, next) => {
   res.send('Not yet implemented.');
 };
 
-// Display item update form on GET
-exports.itemUpdateGet = (req, res, next) => {
+// Display item edit form on GET
+exports.itemEditGet = (req, res, next) => {
   res.send('Not yet implemented.');
 };
 
-// Handle item update form on POST
-exports.itemUpdatePost = (req, res, next) => {
+// Handle item edit form on POST
+exports.itemEditPost = (req, res, next) => {
   res.send('Not yet implemented.');
 };

@@ -32,7 +32,7 @@ exports.categoryDetail = (req, res, next) => {
       err.status = 404;
       return next(err);
     };
-    res.render('categoryDetail', { title: results.category.title, items: results.items });
+    res.render('categoryDetail', { title: results.category.title, items: results.items, category: results.category });
   })
 };
 
@@ -90,20 +90,53 @@ exports.categoryCreatePost = [
 
 // Display category delete form on GET
 exports.categoryDeleteGet = (req, res, next) => {
-  res.send('Not yet implemented.');
+  async.parallel({
+    category: function(callback) {
+      Category.findById(req.params.id).exec(callback);
+    },
+    items: function(callback) {
+      Item.find({ 'category': req.params.id }).exec(callback);
+    }
+  },
+  function(err, results) {
+    if (err) return next(err);
+    if (results.category == null) {
+      res.redirect('/category');
+    }
+    res.render('categoryDelete', { category: results.category, items: results.items });
+  })
 };
 
 // Handle category delete form on POST
 exports.categoryDeletePost = (req, res, next) => {
+  async.parallel({
+    category: function(callback) {
+      Category.findById(req.body.categoryid).exec(callback);
+    },
+    items: function(callback) {
+      Item.find({ 'category': req.body.categoryid }).exec(callback);
+    }
+  },
+  function(err, results) {
+    if (err) return next(err);
+    if (results.items.length > 0) {
+      res.render('categoryDelete', { category: results.category, items: results.items });
+      return;
+    } else {
+      Category.findByIdAndRemove(req.body.categoryid, function deleteCategory(err) {
+        if (err) return next(err);
+        res.redirect('/category');
+      })
+    }
+  })
+};
+
+// Display category edit form on GET
+exports.categoryEditGet = (req, res, next) => {
   res.send('Not yet implemented.');
 };
 
-// Display category update form on GET
-exports.categoryUpdateGet = (req, res, next) => {
-  res.send('Not yet implemented.');
-};
-
-// Handle category update form on POST
-exports.categoryUpdatePost = (req, res, next) => {
+// Handle category edit form on POST
+exports.categoryEditPost = (req, res, next) => {
   res.send('Not yet implemented.');
 };
