@@ -54,10 +54,7 @@ exports.categoryCreatePost = [
   body('description')
   .trim()
   .isLength({ min: 1 })
-  .escape()
-  .withMessage('Please enter description.')
-  .isAlphanumeric()
-  .withMessage('Description must be alphanumeric.'),
+  .withMessage('Please enter description.'),
 
   (req, res, next) => {
     const category = new Category(
@@ -133,10 +130,46 @@ exports.categoryDeletePost = (req, res, next) => {
 
 // Display category edit form on GET
 exports.categoryEditGet = (req, res, next) => {
-  res.send('Not yet implemented.');
+  Category.findById(req.params.id).exec(function(err, category) {
+    if (err) return next(err);
+    res.render('categoryForm', { title: `Edit Category: ${category.title}`, category });
+  })
 };
 
 // Handle category edit form on POST
-exports.categoryEditPost = (req, res, next) => {
-  res.send('Not yet implemented.');
-};
+exports.categoryEditPost = [
+  body('category')
+  .trim()
+  .isLength({ min: 1 })
+  .escape()
+  .withMessage('Please enter category.')
+  .isAlpha()
+  .withMessage('Category must be alphabet letters.'),
+
+  body('description')
+  .trim()
+  .isLength({ min: 1 })
+  .withMessage('Please enter description.'),
+
+  (req, res, next) => {
+    const category = new Category(
+      {
+        title: req.body.category,
+        description: req.body.description,
+        _id: req.params.id
+      }
+    );
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render('categoryForm', { title: `Edit Category: ${category.title}`, category, errors: errors.array() });
+      return;
+    } else {
+      Category.findByIdAndUpdate(req.params.id, category, {}, function(err, theCategory) {
+        if (err) return next(err);
+        res.redirect(theCategory.url);
+      })
+    }
+  }
+]
