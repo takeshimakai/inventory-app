@@ -1,0 +1,26 @@
+extends layout
+
+block content
+
+  h1 #{title}
+
+  if items
+    table
+      thead
+        tr
+          th Product Name
+          th Price
+          th Quantity
+          th Category
+      tbody
+        each item in items
+          tr
+            td
+              a(href=item.url) #{item.title}
+            td $#{item.price}
+            td #{item.quantity}
+            td
+              a(href=item.category.url) #{item.category.title}
+
+  else
+    p There are no items.

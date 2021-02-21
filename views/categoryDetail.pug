@@ -1,0 +1,14 @@
+extends layout
+
+block content
+
+  h1 Category: #{title}
+
+  if items
+    ul
+      each item in items
+        li
+          a(href=item.url) #{item.title}
+  
+  else
+    p There are no items.

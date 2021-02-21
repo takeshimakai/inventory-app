@@ -4,4 +4,16 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    aside.sidebar
+      ul
+        li
+          a(href='/category') All categories
+        li
+          a(href='/item') All items
+        hr
+        li
+          a(href='/category/create') Create new category
+        li
+          a(href='/item/create') Create new item
+    div.content-container
+      block content

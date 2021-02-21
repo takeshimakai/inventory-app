@@ -10,8 +10,7 @@ const CategorySchema = new Schema(
 )
 
 CategorySchema.virtual('url').get(function() {
-  const formattedTitle = this.title.toLowerCase().replace(/\s/g, '-');
-  return `/${formattedTitle}`;
+  return `/category/${this._id}`;
 });
 
 module.exports = mongoose.model('Category', CategorySchema);

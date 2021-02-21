@@ -19,16 +19,11 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-let categories = []
-let items = []
+const categories = [];
+const items = [];
 
 function categoryCreate(title, description, cb) {
-  categorydetail = {
-    title: title,
-    description: description
-  };
-
-  const category = new Category(categorydetail);
+  const category = new Category({ title, description });
 
   category.save(function(err) {
     if (err) {
@@ -42,15 +37,7 @@ function categoryCreate(title, description, cb) {
 }
 
 function itemCreate(title, description, price, quantity, category, cb) {
-  itemdetail = {
-    title: title,
-    description: description,
-    price: price,
-    quantity: quantity,
-    category: category
-  };
-
-  const item = new Item(itemdetail);
+  const item = new Item({ title, description, price, quantity, category });
 
   item.save(function(err) {
     if (err) {
