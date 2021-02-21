@@ -1,0 +1,17 @@
+extends layout
+
+block content
+
+  h1 #{title}
+
+  form(method='POST' action='')
+    label(for='category-input') Category: 
+    input#category-input(type='text' name='category' value=(category === undefined ? '' : category.title))
+    label(for='description-input') Description: 
+    textarea#description-input(name="description" cols="50" rows="5" value=(category === undefined ? '' : category.description))
+    button(type='submit') Submit
+  
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

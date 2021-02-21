@@ -46,3 +46,9 @@ aside li {
   left: 200px;
   width: calc(100% - 200px);
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

@@ -40,9 +40,6 @@ router.get('/category/:id', categoryController.categoryDetail);
 // GET item list
 router.get('/item', itemController.itemList);
 
-// GET item detail
-router.get('/item/:id', itemController.itemDetail);
-
 // GET item create form
 router.get('/item/create', itemController.itemCreateGet);
 
@@ -60,5 +57,8 @@ router.get('/item/:id/update', itemController.itemUpdateGet);
 
 // POST item update form
 router.post('/item/:id/update', itemController.itemUpdatePost);
+
+// GET item detail
+router.get('/item/:id', itemController.itemDetail);
 
 module.exports = router;

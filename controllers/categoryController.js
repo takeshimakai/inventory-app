@@ -2,6 +2,7 @@ const Category = require('../models/category');
 const Item = require('../models/item');
 
 const async = require('async');
+const { body, validationResult } = require('express-validator');
 
 // Display categories
 exports.categoryList = (req, res, next) => {
@@ -37,13 +38,55 @@ exports.categoryDetail = (req, res, next) => {
 
 // Display category create form on GET
 exports.categoryCreateGet = (req, res, next) => {
-  res.send('Not yet implemented.');
+  res.render('categoryForm', { title: 'Create Category' });
 };
 
 // Handle category create form on POST
-exports.categoryCreatePost = (req, res, next) => {
-  res.send('Not yet implemented.');
-};
+exports.categoryCreatePost = [
+  body('category')
+  .trim()
+  .isLength({ min: 1 })
+  .escape()
+  .withMessage('Please enter category.')
+  .isAlpha()
+  .withMessage('Category must be alphabet letters.'),
+
+  body('description')
+  .trim()
+  .isLength({ min: 1 })
+  .escape()
+  .withMessage('Please enter description.')
+  .isAlphanumeric()
+  .withMessage('Description must be alphanumeric.'),
+
+  (req, res, next) => {
+    const category = new Category(
+      {
+        title: req.body.category,
+        description: req.body.description
+      }
+    );
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render('categoryForm', { title: 'Create Category', category, errors: errors.array() });
+      return;
+    } else {
+      Category.findOne({ 'title': category.title }).exec(function(err, foundCategory) {
+        if (err) return next(err);
+        if (foundCategory) {
+          res.redirect(foundCategory.url);
+        } else {
+          category.save(function(err) {
+            if (err) return next(err);
+            res.redirect(category.url);
+          });
+        }
+      });
+    }
+  }
+];
 
 // Display category delete form on GET
 exports.categoryDeleteGet = (req, res, next) => {
