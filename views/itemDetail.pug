@@ -8,3 +8,11 @@ block content
     li Description: #{item.description}
     li Price: $#{item.price}
     li Quantity: #{item.quantity}
+
+  hr
+
+  p
+    a(href=item.url+'/edit') Edit Item
+
+  p
+    a(href=item.url+'/delete') Delete Item

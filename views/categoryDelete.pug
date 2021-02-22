@@ -12,7 +12,7 @@ block content
           a(href=item.url) #{item.title}
   
   else
-    p Are you sure you want to this this category?
+    p Are you sure you want to delete this category?
     form(method='POST' action='')
       input(type='hidden' name='categoryid' required=true value=category._id)
       button(type='submit') Delete
