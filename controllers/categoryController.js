@@ -47,9 +47,7 @@ exports.categoryCreatePost = [
   .trim()
   .isLength({ min: 1 })
   .escape()
-  .withMessage('Please enter category.')
-  .isAlpha()
-  .withMessage('Category must be alphabet letters.'),
+  .withMessage('Please enter category.'),
 
   body('description')
   .trim()
@@ -142,9 +140,7 @@ exports.categoryEditPost = [
   .trim()
   .isLength({ min: 1 })
   .escape()
-  .withMessage('Please enter category.')
-  .isAlpha()
-  .withMessage('Category must be alphabet letters.'),
+  .withMessage('Please enter category.'),
 
   body('description')
   .trim()

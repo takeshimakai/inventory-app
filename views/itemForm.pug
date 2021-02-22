@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+  h1 #{title}
+
+  form(method='POST' action='')
+    label(for='title-input') Title:
+    input#title-input(type='text' name='title' required=true value=(item === undefined ? '' : item.title))
+    label(for='desciption-input') Description:
+    textarea#description-input(name='description' required=true cols="50" rows="5") #{item === undefined ? '' : item.description}
+    label(for='price-input') Price:
+    input#price-input(type="number" name='price' min=0 required=true value=(item === undefined ? 0 : item.price))
+    label(for='quantity-input') Quantity:
+    input#quantity-input(type='number' name='quantity' min=0 required=true value=(item === undefined ? 0 : item.quantity))
+    label(for='category-input') Category:
+    select#category-input(name='category' required=true)
+      each category in categories
+        option(value=category._id selected=(item !== undefined ? (category._id === item.category._id ? 'selected' : false) : false)) #{category.title}
+    button(type='submit') Submit
+
+    if errors
+      ul
+        for error in errors
+          li!= error.msg
