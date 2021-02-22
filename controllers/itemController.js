@@ -18,7 +18,10 @@ exports.itemList = (req, res, next) => {
 
 // Display detail page of item
 exports.itemDetail = (req, res, next) => {
-  Item.findById(req.params.id).exec(function(err, item) {
+  Item
+  .findById(req.params.id)
+  .populate('category')
+  .exec(function(err, item) {
     if (err) return next(err);
     res.render('itemDetail', { title: item.title, item });
   });
@@ -97,10 +100,61 @@ exports.itemDeletePost = (req, res, next) => {
 
 // Display item edit form on GET
 exports.itemEditGet = (req, res, next) => {
-  res.render()
+  async.parallel({
+    item: function(callback) {
+      Item.findById(req.params.id).exec(callback);
+    },
+    categories: function(callback) {
+      Category.find().exec(callback);
+    }
+  },
+  function(err, results) {
+    if (err) return next(err);
+    res.render('itemForm', { title: `Edit Item: ${results.item.title}`, item: results.item, categories: results.categories });
+  });
 };
 
 // Handle item edit form on POST
-exports.itemEditPost = (req, res, next) => {
-  res.send('Not yet implemented.');
-};
+exports.itemEditPost = [
+  body('title')
+  .trim()
+  .isLength({ min: 1 })
+  .escape()
+  .withMessage('Please enter title.'),
+
+  body('description')
+  .trim()
+  .isLength({ min: 1 })
+  .withMessage('Please enter description.'),
+
+  (req, res, next) => {
+    const item = new Item(
+      {
+        title: req.body.title,
+        description: req.body.description,
+        price: req.body.price,
+        quantity: req.body.quantity,
+        category: req.body.category,
+        _id: req.params.id
+      }
+    );
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      Category
+      .find()
+      .sort([['title', 'ascending']])
+      .exec(function(err, categories) {
+        if (err) return next(err);
+        res.render('itemForm', { title: `Edit Item: ${item.title}`, categories, item, errors: errors.array() });
+      });
+      return;
+    } else {
+      Item.findByIdAndUpdate(req.params.id, item, {}, function(err, theItem) {
+        if (err) return next(err);
+        res.redirect(theItem.url);
+      })
+    }
+  }
+];

@@ -8,6 +8,8 @@ block content
     li Description: #{item.description}
     li Price: $#{item.price}
     li Quantity: #{item.quantity}
+    li Category: 
+      a(href=item.category.url) #{item.category.title}
 
   hr
 

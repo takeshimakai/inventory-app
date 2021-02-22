@@ -16,7 +16,7 @@ block content
     label(for='category-input') Category:
     select#category-input(name='category' required=true)
       each category in categories
-        option(value=category._id selected=(item !== undefined ? (category._id === item.category._id ? 'selected' : false) : false)) #{category.title}
+        option(value=category._id selected=(item === undefined ? false : (category._id.toString() == item.category._id ? 'selected' : false))) #{category.title}
     button(type='submit') Submit
 
     if errors
