@@ -58,7 +58,8 @@ exports.itemCreatePost = [
         description: req.body.description,
         price: req.body.price,
         quantity: req.body.quantity,
-        category: req.body.category
+        category: req.body.category,
+        photo: { data: req.file.buffer, contentType: req.file.mimetype }
       }
     )
 
@@ -74,6 +75,8 @@ exports.itemCreatePost = [
       });
       return;
     } else {
+      //res.contentType(item.photo.contentType)
+      //res.send(item.photo.data);
       item.save(function(err) {
         if (err) return next(err);
         res.redirect(item.url);

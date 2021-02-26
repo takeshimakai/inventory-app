@@ -4,7 +4,7 @@ block content
 
   h1 #{title}
 
-  form(method='POST' action='')
+  form(method='POST' action='' enctype='multipart/form-data')
     label(for='title-input') Title:
     input#title-input(type='text' name='title' required=true value=(item === undefined ? '' : item.title))
     label(for='desciption-input') Description:
@@ -17,6 +17,8 @@ block content
     select#category-input(name='category' required=true)
       each category in categories
         option(value=category._id selected=(item === undefined ? false : (category._id.toString() == item.category._id ? 'selected' : false))) #{category.title}
+    label(for='photo-input') Upload Photo:
+    input(type='file' name='photo')
     button(type='submit') Submit
 
     if errors

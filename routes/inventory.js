@@ -1,5 +1,21 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1000 * 1000
+  },
+  fileFilter: function(req, file, cb) {
+    const ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== 'jpeg') {
+      return cb(new Error('File must be an image.'));
+    }
+    cb(null, true);
+  }
+}).single('photo');
 
 const categoryController = require('../controllers/categoryController');
 const itemController = require('../controllers/itemController');
@@ -44,7 +60,7 @@ router.get('/item', itemController.itemList);
 router.get('/item/create', itemController.itemCreateGet);
 
 //POST item create form
-router.post('/item/create', itemController.itemCreatePost);
+router.post('/item/create', upload, itemController.itemCreatePost);
 
 // GET item delete form
 router.get('/item/:id/delete', itemController.itemDeleteGet);
