@@ -72,7 +72,7 @@ router.post('/item/:id/delete', itemController.itemDeletePost);
 router.get('/item/:id/edit', itemController.itemEditGet);
 
 // POST item edit form
-router.post('/item/:id/edit', itemController.itemEditPost);
+router.post('/item/:id/edit', upload, itemController.itemEditPost);
 
 // GET item detail
 router.get('/item/:id', itemController.itemDetail);

@@ -75,8 +75,6 @@ exports.itemCreatePost = [
       });
       return;
     } else {
-      //res.contentType(item.photo.contentType)
-      //res.send(item.photo.data);
       item.save(function(err) {
         if (err) return next(err);
         res.redirect(item.url);
@@ -138,6 +136,7 @@ exports.itemEditPost = [
         price: req.body.price,
         quantity: req.body.quantity,
         category: req.body.category,
+        photo: { data: req.file.buffer, contentType: req.file.mimetype },
         _id: req.params.id
       }
     );

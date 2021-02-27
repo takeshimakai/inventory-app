@@ -56,3 +56,7 @@ form {
   flex-direction: column;
   align-items: flex-start;
 }
+
+.item-img {
+  height: 200px;
+}

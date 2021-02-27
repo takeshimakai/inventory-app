@@ -11,7 +11,7 @@ block content
     li Category: 
       a(href=item.category.url) #{item.category.title}
     li
-      img(src=(item.photo.data !== undefined ? `data:${item.photo.contentType};base64,` + item.photo.data.toString('base64') : null) alt="")
+      img.item-img(src=(item.photo.data !== undefined ? `data:${item.photo.contentType};base64,` + item.photo.data.toString('base64') : null) alt="")
 
   hr
 
